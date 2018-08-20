@@ -1,25 +1,29 @@
-export function add(/*date, quantity, unit*/) {
-  throw new Error("Not implemented");
+import { DateTime } from 'luxon';
+
+export function add(date, quantity, unit) {
+  return DateTime.fromJSDate(date)
+    .add({ [unit]: quantity })
+    .toJSDate();
 }
 
 export function formatDate(/*date, format, locale = null*/) {
   throw new Error("Not implemented");
 }
 
-export function startOf(/*date, unit*/) {
-  throw new Error("Not implemented");
+export function startOf(date, unit) {
+  return DateTime.fromJSDate(date).startOf(unit).toJSDate();
 }
 
-export function endOf(/*date, unit*/) {
-  throw new Error("Not implemented");
+export function endOf(date, unit) {
+  return DateTime.fromJSDate(date).endOf(unit).toJSDate();
 }
 
-export function weekday(/*date*/) {
-  throw new Error("Not implemented");
+export function weekday(date) {
+  return DateTime.fromJSDate(date).weekday;
 }
 
-export function isoWeekday(/*date*/) {
-  throw new Error("Not implemented");
+export function isoWeekday(date) {
+  return DateTime.fromJSDate(date).isoWeekday;
 }
 
 export function getWeekdaysShort(/**/) {
