@@ -1,4 +1,4 @@
-import { DateTime, Settings } from "luxon";
+import { DateTime, Settings, Duration } from 'luxon';
 
 function _getWeekdays(dayFormat) {
   let result = [];
@@ -71,12 +71,12 @@ export function isSame(date1, date2, unit) {
   return dt1.hasSame(dt2, unit);
 }
 
-export function isBetween(/*date, start, end, unit, inclusivity*/) {
-  throw new Error("Not implemented");
+export function isBetween(date, start, end) {
+  return +start <= +date && +date <= +end;
 }
 
-export function diff(/*date1, date2*/) {
-  throw new Error("Not implemented");
+export function diff(date1, date2) {
+  return DateTime.fromJSDate(date1).diff(DateTime.fromJSDate(date2));
 }
 
 export function normalizeDate(dateOrDatetime) {
@@ -91,12 +91,21 @@ export function normalizeDate(dateOrDatetime) {
   }
 }
 
-export function normalizeRangeActionValue(/*val*/) {
-  throw new Error("Not implemented");
+export function normalizeRangeActionValue(val) {
+  return {
+    date: val.date,
+    datetime: {
+      start: val.date.start ? DateTime.fromJSDate(val.date.start) : val.date.start,
+      end: val.date.end ? DateTime.fromJSDate(val.date.end) : val.date.end
+    }
+  };
 }
 
-export function normalizeMultipleActionValue(/*val*/) {
-  throw new Error("Not implemented");
+export function normalizeMultipleActionValue(val) {
+  return {
+    date: val.date,
+    datetime: val.date ? val.date.map(e => DateTime.fromJSDate(e)) : val.date
+  };
 }
 
 export function normalizeCalendarDay(day) {
@@ -124,8 +133,33 @@ export function normalizeCalendarValue(value) {
   return { date: undefined, datetime: undefined };
 }
 
-export function normalizeDuration(/*value*/) {
-  throw new Error("Not implemented");
+const DURATION_UNITS = {
+  y: 'years',
+  M: 'months',
+  w: 'weeks',
+  d: 'days',
+  h: 'hours',
+  m: 'minutes',
+  s: 'seconds'
+}
+
+export function normalizeDuration(value) {
+  if (value === null) {
+    return null;
+  }
+  if (value instanceof Duration) {
+    return value.valueOf();
+  }
+  if (typeof value === "number") {
+    return value;
+  }
+  if (typeof value === "string") {
+    let [, quantity, units] = value.match(/(\d+)(.*)/);
+    units = units.trim() || "days";
+    units = DURATION_UNITS[units] || units;
+    let duration = Duration.fromObject({ [units]: parseInt(quantity, 10) });
+    return duration.valueOf();
+  }
 }
 
 export function getDefaultLocale() {
