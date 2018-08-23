@@ -100,7 +100,7 @@ export function normalizeMultipleActionValue(/*val*/) {
 }
 
 export function normalizeCalendarDay(day) {
-  day.luxon = DateTime.fromJSDate(day.date);
+  day.datetime = DateTime.fromJSDate(day.date);
   return day;
 }
 
@@ -117,8 +117,11 @@ export function withLocale(locale, fn) {
   return returnValue;
 }
 
-export function normalizeCalendarValue(/*value*/) {
-  throw new Error("Not implemented");
+export function normalizeCalendarValue(value) {
+  if (value) {
+    return { date: value.date, datetime: value.date ? DateTime.fromJSDate(value.date) : undefined };
+  }
+  return { date: undefined, datetime: undefined };
 }
 
 export function normalizeDuration(/*value*/) {
