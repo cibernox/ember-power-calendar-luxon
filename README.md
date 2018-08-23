@@ -1,7 +1,15 @@
 ember-power-calendar-luxon
 ==============================================================================
 
-[Short description of the addon.]
+Date manipulation, formatting and parsing is too complex for ember-power-calendar to reinvent, so it
+has to rely on other well tested libraries for that.
+
+This is the addon that exposes the utils used internally by [ember-power-calendar](https://www.ember-power-calendar.com),
+using [Luxon.js](https://moment.github.io/luxon/) underneath, a lighter (and arguably with a nicer API) alternative
+to moment.js that leverages the browser's [Intl API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) for localization.
+
+You will want to install this addon if you already use luxon in your application already, or if
+luxon is your preferred date manipulation library.
 
 Installation
 ------------------------------------------------------------------------------
@@ -14,7 +22,11 @@ ember install ember-power-calendar-luxon
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+**Don't use it.**
+
+This library is meant to be used internally by `ember-power-calendar` only.
+
+The API can change in breaking ways based on the needs of Ember Power Calendar.
 
 
 Contributing
