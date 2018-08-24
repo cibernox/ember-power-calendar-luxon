@@ -25,6 +25,7 @@ export function formatDate(date, format, locale = null) {
   format = format.replace('YYYY', 'yyyy')
   format = format.replace('dddd', 'EEEE');
   format = format.replace('ddd', 'EEE');
+  format = format.replace('DD', 'dd');
   return datetime.toFormat(format);
 }
 
