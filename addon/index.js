@@ -129,11 +129,10 @@ const WEEK_STARTS = {
 
 function _getWeekdays(dayFormat) {
   let result = [];
-  let date = new Date(0);
   let formatter = new Intl.DateTimeFormat(Settings.defaultLocale, { weekday: dayFormat });
-  for (let day = 4; day <= 10; day++) {
-    date.setDate(day);
-    result.push(formatter.format(date));
+  for (let i = 4; i <= 10; i++) {
+    let dt = DateTime.utc(1970, 1, i);
+    result.push(formatter.format(dt));
   }
   return result;
 }
