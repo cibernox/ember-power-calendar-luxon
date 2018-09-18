@@ -129,7 +129,10 @@ const WEEK_STARTS = {
 
 function _getWeekdays(dayFormat) {
   let result = [];
-  let formatter = new Intl.DateTimeFormat(Settings.defaultLocale, { weekday: dayFormat });
+  let formatter = new Intl.DateTimeFormat(Settings.defaultLocale, {
+    weekday: dayFormat,
+    timeZone: 'UTC'
+  });
   for (let i = 4; i <= 10; i++) {
     let dt = DateTime.utc(1970, 1, i);
     result.push(formatter.format(dt));
