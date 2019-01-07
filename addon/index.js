@@ -164,7 +164,8 @@ export function startOf(date, unit) {
     let normalizedLocale = datetime.locale.toLowerCase();
     let weekday = WEEK_STARTS[normalizedLocale];
     if (weekday === undefined) {
-      weekday = 0;
+      let parentLocaleStart = WEEK_STARTS[normalizedLocale.slice(0, 2)];
+      weekday = parentLocaleStart === undefined ? 0 : parentLocaleStart; // 'es-ar' defaults to 'es'
     }
     datetime = datetime.set({ hour: 0, minute: 0, second: 0, millisecond: 0, weekday });
   } else {
