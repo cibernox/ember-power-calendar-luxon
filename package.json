@@ -23,7 +23,7 @@
     "broccoli-funnel": "^2.0.1",
     "ember-auto-import": "^1.2.10",
     "ember-cli-babel": "^6.6.0",
-    "luxon": "^1.3.3"
+    "luxon": "^1.10.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.7.0",
