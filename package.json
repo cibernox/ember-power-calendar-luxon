@@ -6,7 +6,10 @@
     "ember-addon",
     "ember-power-calendar-adapter"
   ],
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cibernox/ember-power-calendar-luxon.git"
+  },
   "license": "MIT",
   "author": "",
   "directories": {
