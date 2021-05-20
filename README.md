@@ -11,6 +11,15 @@ to moment.js that leverages the browser's [Intl API](https://developer.mozilla.o
 You will want to install this addon if you already use luxon in your application already, or if
 luxon is your preferred date manipulation library.
 
+
+Compatibility
+------------------------------------------------------------------------------
+
+* Ember.js v3.16 or above
+* Ember CLI v2.13 or above
+* Node.js v10 or above
+
+
 Installation
 ------------------------------------------------------------------------------
 
@@ -54,7 +63,6 @@ Contributing
 * `ember serve`
 * Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
 License
 ------------------------------------------------------------------------------
