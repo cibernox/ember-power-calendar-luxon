@@ -124,14 +124,14 @@ const WEEK_STARTS = {
   yo: 1,
   'zh-cn': 1,
   'zh-hk': 0,
-  'zh-tw': 0
+  'zh-tw': 0,
 };
 
 function _getWeekdays(dayFormat) {
   let result = [];
   let formatter = new Intl.DateTimeFormat(Settings.defaultLocale, {
     weekday: dayFormat,
-    timeZone: 'UTC'
+    timeZone: 'UTC',
   });
   for (let i = 4; i <= 10; i++) {
     let dt = DateTime.utc(1970, 1, i);
@@ -151,7 +151,7 @@ export function formatDate(date, format, locale = null) {
   if (locale) {
     datetime = datetime.setLocale(locale);
   }
-  format = format.replace('YYYY', 'yyyy')
+  format = format.replace('YYYY', 'yyyy');
   format = format.replace('dddd', 'EEEE');
   format = format.replace('ddd', 'EEE');
   format = format.replace('DD', 'dd');
@@ -167,7 +167,13 @@ export function startOf(date, unit) {
       let parentLocaleStart = WEEK_STARTS[normalizedLocale.slice(0, 2)];
       weekday = parentLocaleStart === undefined ? 0 : parentLocaleStart; // 'es-ar' defaults to 'es'
     }
-    datetime = datetime.set({ hour: 0, minute: 0, second: 0, millisecond: 0, weekday });
+    datetime = datetime.set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+      weekday,
+    });
   } else {
     datetime = datetime.startOf(unit);
   }
@@ -208,8 +214,8 @@ export function isBefore(date1, date2) {
 }
 
 export function isSame(date1, date2, unit) {
-  let dt1 = DateTime.fromJSDate(date1)
-  let dt2 = DateTime.fromJSDate(date2)
+  let dt1 = DateTime.fromJSDate(date1);
+  let dt2 = DateTime.fromJSDate(date2);
   return dt1.hasSame(dt2, unit);
 }
 
@@ -237,16 +243,18 @@ export function normalizeRangeActionValue(val) {
   return {
     date: val.date,
     datetime: {
-      start: val.date.start ? DateTime.fromJSDate(val.date.start) : val.date.start,
-      end: val.date.end ? DateTime.fromJSDate(val.date.end) : val.date.end
-    }
+      start: val.date.start
+        ? DateTime.fromJSDate(val.date.start)
+        : val.date.start,
+      end: val.date.end ? DateTime.fromJSDate(val.date.end) : val.date.end,
+    },
   };
 }
 
 export function normalizeMultipleActionValue(val) {
   return {
     date: val.date,
-    datetime: val.date ? val.date.map(e => DateTime.fromJSDate(e)) : val.date
+    datetime: val.date ? val.date.map((e) => DateTime.fromJSDate(e)) : val.date,
   };
 }
 
@@ -270,7 +278,10 @@ export function withLocale(locale, fn) {
 
 export function normalizeCalendarValue(value) {
   if (value) {
-    return { date: value.date, datetime: value.date ? DateTime.fromJSDate(value.date) : undefined };
+    return {
+      date: value.date,
+      datetime: value.date ? DateTime.fromJSDate(value.date) : undefined,
+    };
   }
   return { date: undefined, datetime: undefined };
 }
@@ -282,8 +293,8 @@ const DURATION_UNITS = {
   d: 'days',
   h: 'hours',
   m: 'minutes',
-  s: 'seconds'
-}
+  s: 'seconds',
+};
 
 export function normalizeDuration(value) {
   if (value === null) {
@@ -292,12 +303,12 @@ export function normalizeDuration(value) {
   if (value instanceof Duration) {
     return value.valueOf();
   }
-  if (typeof value === "number") {
+  if (typeof value === 'number') {
     return value;
   }
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     let [, quantity, units] = value.match(/(\d+)(.*)/);
-    units = units.trim() || "days";
+    units = units.trim() || 'days';
     units = DURATION_UNITS[units] || units;
     let duration = Duration.fromObject({ [units]: parseInt(quantity, 10) });
     return duration.valueOf();
@@ -317,7 +328,7 @@ export function localeStartOfWeek(locale) {
 
 export function startOfWeek(day, startOfWeek) {
   while (isoWeekday(day) % 7 !== startOfWeek) {
-    day = add(day, -1, "day");
+    day = add(day, -1, 'day');
   }
   return day;
 }
@@ -325,7 +336,7 @@ export function startOfWeek(day, startOfWeek) {
 export function endOfWeek(day, startOfWeek) {
   let eow = (startOfWeek + 6) % 7;
   while (isoWeekday(day) % 7 !== eow) {
-    day = add(day, 1, "day");
+    day = add(day, 1, 'day');
   }
   return day;
 }
