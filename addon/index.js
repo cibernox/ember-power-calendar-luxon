@@ -316,7 +316,9 @@ export function normalizeDuration(value) {
 }
 
 export function getDefaultLocale() {
-  return Settings.defaultLocale || DateTime.local().resolvedLocaleOpts().locale;
+  return (
+    Settings.defaultLocale || DateTime.local().resolvedLocaleOptions().locale
+  );
 }
 
 export function localeStartOfWeek(locale) {
