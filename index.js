@@ -14,11 +14,16 @@ module.exports = {
     let namespacedTree = new Funnel(tree, {
       srcDir: '/',
       destDir: `/ember-power-calendar-utils`,
-      annotation: `Addon#treeForVendor (${this.name})`
+      annotation: `Addon#treeForVendor (${this.name})`,
     });
 
-    return this.preprocessJs(namespacedTree, '/', 'ember-power-calendar-utils', {
-      registry: this.registry
-    });
-  }
+    return this.preprocessJs(
+      namespacedTree,
+      '/',
+      'ember-power-calendar-utils',
+      {
+        registry: this.registry,
+      }
+    );
+  },
 };
