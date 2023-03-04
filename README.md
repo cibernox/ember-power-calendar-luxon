@@ -40,12 +40,12 @@ The API can change in breaking ways based on the needs of Ember Power Calendar.
 
 * `git clone <repository-url>`
 * `cd ember-power-calendar-luxon`
-* `npm install`
+* `pnpm install`
 
 ### Linting
 
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+* `pnpm lint`
+* `pnpm lint:fix`
 
 ### Running tests
 
