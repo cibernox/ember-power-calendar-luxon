@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 14
+  NODE_VERSION: 16
   PNPM_VERSION: 7
 
 jobs:
@@ -69,10 +69,12 @@ jobs:
         try-scenario:
           - ember-lts-3.28
           - ember-lts-4.4
+          - ember-lts-4.8
+          - ember-lts-4.12
+          - ember-5
           - ember-release
           - ember-beta
           - ember-canary
-          - ember-classic
           - embroider-safe
           - embroider-optimized
 
