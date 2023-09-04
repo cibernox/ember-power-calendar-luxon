@@ -24,6 +24,13 @@ luxon is your preferred date manipulation library.
 ember install ember-power-calendar-luxon
 ```
 
+Add the following lines into you `app/app.js` to register this meta addon to `ember-power-calendar`
+```
+import { registerDateLibrary } from 'ember-power-calendar';
+import DateUtils from 'ember-power-calendar-luxon';
+
+registerDateLibrary(DateUtils);
+```
 
 ## Usage
 
