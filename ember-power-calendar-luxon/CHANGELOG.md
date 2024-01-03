@@ -1,4 +1,13 @@
 
+
+## v0.7.0 (2024-01-03)
+
+#### :boom: Breaking Change
+* [#33](https://github.com/cibernox/ember-power-calendar-luxon/pull/33) Addon to V2 ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- [@mkszepp](https://github.com/mkszepp)
+
 ## v0.6.0 (2023-11-15)
 
 #### :boom: Breaking Change

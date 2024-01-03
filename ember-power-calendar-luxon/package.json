@@ -1,15 +1,15 @@
 {
   "name": "ember-power-calendar-luxon",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
     "ember-addon",
-	  "ember-power-calendar-adapter"
+    "ember-power-calendar-adapter"
   ],
   "repository": {
-	  "type": "git",
-	  "url": "git+https://github.com/cibernox/ember-power-calendar-luxon.git"
-	},
+    "type": "git",
+    "url": "git+https://github.com/cibernox/ember-power-calendar-luxon.git"
+  },
   "license": "MIT",
   "author": "",
   "exports": {
