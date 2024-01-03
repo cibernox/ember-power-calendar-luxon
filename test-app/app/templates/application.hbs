@@ -1,0 +1,34 @@
+{{page-title "Dummy"}}
+
+<h2 id="title">Welcome to Ember</h2>
+
+<PowerCalendar
+  @center={{this.someDate}}
+  @selected={{this.selected}}
+  @onSelect={{set-datetime this "selected"}}
+  @onCenterChange={{set-datetime this "someDate"}} as |calendar|
+>
+  <calendar.Nav/>
+  <calendar.Days/>
+</PowerCalendar>
+
+<PowerCalendarRange
+  @center={{this.someDate}}
+  @selected={{this.selectedRange}}
+  @minRange="1w"
+  @onSelect={{set-datetime this "selectedRange"}}
+  @onCenterChange={{set-datetime this "someDate"}} as |calendar|
+>
+  <calendar.Nav/>
+  <calendar.Days/>
+</PowerCalendarRange>
+
+<PowerCalendarMultiple
+  @center={{this.someDate}}
+  @selected={{this.selectedMultiple}}
+  @onSelect={{set-datetime this "selectedMultiple"}}
+  @onCenterChange={{set-datetime this "someDate"}} as |calendar|
+>
+  <calendar.Nav/>
+  <calendar.Days/>
+</PowerCalendarMultiple>
