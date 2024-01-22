@@ -1,5 +1,14 @@
 
 
+
+## v0.7.1 (2024-01-22)
+
+#### :bug: Bug Fix
+* [#34](https://github.com/cibernox/ember-power-calendar-luxon/pull/34) Use luxon format when setting calendar day numbers ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- [@mkszepp](https://github.com/mkszepp)
+
 ## v0.7.0 (2024-01-03)
 
 #### :boom: Breaking Change
