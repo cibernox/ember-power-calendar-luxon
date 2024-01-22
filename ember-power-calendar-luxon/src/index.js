@@ -288,6 +288,7 @@ export function normalizeMultipleActionValue(val) {
 
 export function normalizeCalendarDay(day) {
   day.datetime = DateTime.fromJSDate(day.date);
+  day.number = day.datetime.toFormat('d');
   return day;
 }
 
