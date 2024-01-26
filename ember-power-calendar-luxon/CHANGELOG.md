@@ -1,6 +1,15 @@
 
 
 
+
+## v0.7.2 (2024-01-26)
+
+#### :bug: Bug Fix
+* [#36](https://github.com/cibernox/ember-power-calendar-luxon/pull/36) Fix check for DateTime instance ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- [@mkszepp](https://github.com/mkszepp)
+
 ## v0.7.1 (2024-01-22)
 
 #### :bug: Bug Fix
