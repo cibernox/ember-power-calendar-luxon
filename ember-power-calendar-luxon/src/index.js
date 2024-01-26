@@ -175,7 +175,7 @@ export function add(date, quantity, unit) {
 }
 
 export function formatDate(date, format, locale = null) {
-  let datetime = date instanceof DateTime ? date : DateTime.fromJSDate(date);
+  let datetime = DateTime.isDateTime(date) ? date : DateTime.fromJSDate(date);
   if (locale) {
     datetime = datetime.setLocale(locale);
   }
