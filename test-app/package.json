@@ -74,7 +74,8 @@
     "tracked-built-ins": "^3.3.0",
     "webpack": "^5.89.0",
     "ember-cli-sass": "^11.0.1",
-    "ember-power-calendar": "^0.21.0",
+    "ember-power-calendar": "^0.22.0-beta.7",
+    "ember-power-calendar-luxon": "workspace:*",
     "sass": "^1.64.2"
   },
   "engines": {
@@ -82,8 +83,5 @@
   },
   "ember": {
     "edition": "octane"
-  },
-  "dependencies": {
-    "ember-power-calendar-luxon": "workspace:*"
   }
 }
