@@ -2,6 +2,15 @@
 
 
 
+
+## v0.8.0 (2024-02-13)
+
+#### :rocket: Enhancement
+* [#37](https://github.com/cibernox/ember-power-calendar-luxon/pull/37) Convert addon to typescript ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- [@mkszepp](https://github.com/mkszepp)
+
 ## v0.7.2 (2024-01-26)
 
 #### :bug: Bug Fix
