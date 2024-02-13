@@ -1,7 +1,22 @@
-import { DateTime, Settings, Duration } from 'luxon';
+import {
+  DateTime,
+  Settings,
+  Duration,
+  type DateTimeFormatOptions,
+  type DateTimeUnit,
+  type DateObjectUnits,
+} from 'luxon';
+import type {
+  NormalizeCalendarValue,
+  NormalizeMultipleActionValue,
+  NormalizeRangeActionValue,
+  PowerCalendarDay,
+} from 'ember-power-calendar/utils';
 
 /* Sadly the day in which weeks start is not part of the Intl API, so I need to harcode them */
-const WEEK_STARTS = {
+const WEEK_STARTS: {
+  [key: string]: number;
+} = {
   af: 1,
   ar: 6,
   'ar-dz': 0,
@@ -127,14 +142,14 @@ const WEEK_STARTS = {
   'zh-tw': 0,
 };
 
-function _getWeekdays(dayFormat) {
-  let result = [];
-  let formatter = new Intl.DateTimeFormat(Settings.defaultLocale, {
-    weekday: dayFormat,
+function _getWeekdays(dayFormat: string) {
+  const result: string[] = [];
+  const formatter = new Intl.DateTimeFormat(Settings.defaultLocale, {
+    weekday: dayFormat as DateTimeFormatOptions['weekday'],
     timeZone: 'UTC',
   });
   for (let i = 4; i <= 10; i++) {
-    let dt = DateTime.utc(1970, 1, i);
+    const dt = DateTime.utc(1970, 1, i).toJSDate();
     result.push(formatter.format(dt));
   }
   return result;
@@ -168,13 +183,17 @@ export default {
   endOfWeek,
 };
 
-export function add(date, quantity, unit) {
+export function add(date: Date, quantity: number, unit: string): Date {
   return DateTime.fromJSDate(date)
     .plus({ [unit]: quantity })
     .toJSDate();
 }
 
-export function formatDate(date, format, locale = null) {
+export function formatDate(
+  date: Date,
+  format: string,
+  locale: string | null = null,
+): string {
   let datetime = DateTime.isDateTime(date) ? date : DateTime.fromJSDate(date);
   if (locale) {
     datetime = datetime.setLocale(locale);
@@ -186,88 +205,102 @@ export function formatDate(date, format, locale = null) {
   return datetime.toFormat(format);
 }
 
-export function startOf(date, unit) {
+export function startOf(date: Date, unit: string): Date {
   let datetime = DateTime.fromJSDate(date);
   if (unit === 'week') {
-    let normalizedLocale = datetime.locale.toLowerCase();
+    const normalizedLocale = datetime?.locale?.toLowerCase() ?? '';
     let weekday = WEEK_STARTS[normalizedLocale];
     if (weekday === undefined) {
-      let parentLocaleStart = WEEK_STARTS[normalizedLocale.slice(0, 2)];
+      const parentLocaleStart = WEEK_STARTS[normalizedLocale.slice(0, 2)];
       weekday = parentLocaleStart === undefined ? 0 : parentLocaleStart; // 'es-ar' defaults to 'es'
     }
-    datetime = datetime.set({
+    const values = {
       hour: 0,
       minute: 0,
       second: 0,
       millisecond: 0,
-      weekday,
-    });
+      weekday: weekday as DateObjectUnits['weekday'],
+    };
+    datetime = datetime.set(values);
   } else {
-    datetime = datetime.startOf(unit);
+    datetime = datetime.startOf(unit as DateTimeUnit);
   }
   return datetime.toJSDate();
 }
 
-export function endOf(date, unit) {
-  return DateTime.fromJSDate(date).endOf(unit).toJSDate();
+export function endOf(date: Date, unit: string): Date {
+  return DateTime.fromJSDate(date)
+    .endOf(unit as DateTimeUnit)
+    .toJSDate();
 }
 
-export function weekday(date) {
+export function weekday(date: Date): number {
   return DateTime.fromJSDate(date).weekday;
 }
 
-export function isoWeekday(date) {
-  let dayStr = DateTime.fromJSDate(date).toISOWeekDate().split('-')[2];
+export function isoWeekday(date: Date): number {
+  const dayStr = DateTime.fromJSDate(date).toISOWeekDate()?.split('-')[2] ?? '';
   return parseInt(dayStr, 10);
 }
 
-export function getWeekdaysShort() {
+export function getWeekdaysShort(): string[] {
   return _getWeekdays('short');
 }
 
-export function getWeekdaysMin() {
+export function getWeekdaysMin(): string[] {
   return _getWeekdays('narrow');
 }
 
-export function getWeekdays() {
+export function getWeekdays(): string[] {
   return _getWeekdays('long');
 }
 
-export function isAfter(date1, date2) {
+export function isAfter(date1: Date, date2: Date): boolean {
   return +date1 > +date2;
 }
 
-export function isBefore(date1, date2) {
+export function isBefore(date1: Date, date2: Date): boolean {
   return +date1 < +date2;
 }
 
-export function isSame(date1, date2, unit) {
-  let dt1 = DateTime.fromJSDate(date1);
-  let dt2 = DateTime.fromJSDate(date2);
-  return dt1.hasSame(dt2, unit);
+export function isSame(date1: Date, date2: Date, unit: string): boolean {
+  const dt1 = DateTime.fromJSDate(date1);
+  const dt2 = DateTime.fromJSDate(date2);
+  return dt1.hasSame(dt2, unit as DateTimeUnit);
 }
 
-export function isBetween(date, start, end) {
+export function isBetween(
+  date: Date,
+  start: Date,
+  end: Date,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _unit?: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _inclusivity?: string,
+): boolean {
   return +start <= +date && +date <= +end;
 }
 
-export function diff(date1, date2) {
-  return DateTime.fromJSDate(date1).diff(DateTime.fromJSDate(date2));
+export function diff(date1: Date, date2: Date): number {
+  return DateTime.fromJSDate(date1)
+    .diff(DateTime.fromJSDate(date2))
+    .as('milliseconds');
 }
 
-export function normalizeDate(dateOrDatetime) {
-  if (
-    dateOrDatetime === undefined ||
-    dateOrDatetime === null ||
-    dateOrDatetime instanceof Date
-  ) {
-    return dateOrDatetime;
-  } else {
-    return dateOrDatetime.toJSDate();
+export function normalizeDate(dateOrDateTime?: unknown): Date | undefined {
+  if (dateOrDateTime instanceof Date) {
+    return dateOrDateTime;
+  } else if (DateTime.isDateTime(dateOrDateTime)) {
+    return (dateOrDateTime as DateTime).toJSDate();
   }
 }
 
-export function normalizeRangeActionValue(val) {
+export function normalizeRangeActionValue(val: {
+  date: {
+    start?: Date | null;
+    end?: Date | null;
+  };
+}): NormalizeRangeActionValue {
   return {
     date: val.date,
     datetime: {
@@ -279,23 +312,25 @@ export function normalizeRangeActionValue(val) {
   };
 }
 
-export function normalizeMultipleActionValue(val) {
+export function normalizeMultipleActionValue(val: {
+  date: Date[];
+}): NormalizeMultipleActionValue {
   return {
     date: val.date,
     datetime: val.date ? val.date.map((e) => DateTime.fromJSDate(e)) : val.date,
   };
 }
 
-export function normalizeCalendarDay(day) {
+export function normalizeCalendarDay(day: PowerCalendarDay): PowerCalendarDay {
   day.datetime = DateTime.fromJSDate(day.date);
-  day.number = day.datetime.toFormat('d');
+  day.number = parseInt((day.datetime as DateTime).toFormat('d'), 10);
   return day;
 }
 
-export function withLocale(locale, fn) {
+export function withLocale(locale: string, fn: () => unknown): unknown {
   let returnValue;
   if (locale) {
-    let previousLocale = Settings.defaultLocale;
+    const previousLocale = Settings.defaultLocale;
     Settings.defaultLocale = locale;
     returnValue = fn();
     Settings.defaultLocale = previousLocale;
@@ -305,7 +340,9 @@ export function withLocale(locale, fn) {
   return returnValue;
 }
 
-export function normalizeCalendarValue(value) {
+export function normalizeCalendarValue(value: {
+  date: Date;
+}): NormalizeCalendarValue {
   if (value) {
     return {
       date: value.date,
@@ -315,7 +352,9 @@ export function normalizeCalendarValue(value) {
   return { date: undefined, datetime: undefined };
 }
 
-const DURATION_UNITS = {
+const DURATION_UNITS: {
+  [key: string]: string;
+} = {
   y: 'years',
   M: 'months',
   w: 'weeks',
@@ -325,47 +364,50 @@ const DURATION_UNITS = {
   s: 'seconds',
 };
 
-export function normalizeDuration(value) {
+export function normalizeDuration(value: unknown): number | null | undefined {
   if (value === null) {
     return null;
   }
   if (value instanceof Duration) {
-    return value.valueOf();
+    return (value as Duration).valueOf();
   }
   if (typeof value === 'number') {
     return value;
   }
   if (typeof value === 'string') {
-    let [, quantity, units] = value.match(/(\d+)(.*)/);
-    units = units.trim() || 'days';
+    const matches = value.match(/(\d+)(.*)/) ?? [];
+    const quantity = matches[1] ?? '';
+    let units = matches[2]?.trim() || 'days';
     units = DURATION_UNITS[units] || units;
-    let duration = Duration.fromObject({ [units]: parseInt(quantity, 10) });
+    const duration = Duration.fromObject({ [units]: parseInt(quantity, 10) });
     return duration.valueOf();
   }
 }
 
-export function getDefaultLocale() {
+export function getDefaultLocale(): string {
   return (
     Settings.defaultLocale || DateTime.local().resolvedLocaleOptions().locale
   );
 }
 
-export function localeStartOfWeek(locale) {
-  let now = new Date();
-  let day = withLocale(locale, () => formatDate(startOf(now, 'week'), 'dddd'));
-  let idx = withLocale(locale, getWeekdays).indexOf(day);
+export function localeStartOfWeek(locale: string): number {
+  const now = new Date();
+  const day = withLocale(locale, () =>
+    formatDate(startOf(now, 'week'), 'dddd'),
+  ) as string;
+  const idx = (withLocale(locale, getWeekdays) as string[]).indexOf(day);
   return idx >= 0 ? idx : 0;
 }
 
-export function startOfWeek(day, startOfWeek) {
+export function startOfWeek(day: Date, startOfWeek: number): Date {
   while (isoWeekday(day) % 7 !== startOfWeek) {
     day = add(day, -1, 'day');
   }
   return day;
 }
 
-export function endOfWeek(day, startOfWeek) {
-  let eow = (startOfWeek + 6) % 7;
+export function endOfWeek(day: Date, startOfWeek: number): Date {
+  const eow = (startOfWeek + 6) % 7;
   while (isoWeekday(day) % 7 !== eow) {
     day = add(day, 1, 'day');
   }
