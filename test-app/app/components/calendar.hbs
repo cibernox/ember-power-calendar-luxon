@@ -1,0 +1,10 @@
+<PowerCalendar
+  @selected={{this.selected}}
+  @onSelect={{this.onSelect}}
+  as |calendar|
+>
+  <calendar.Days />
+</PowerCalendar>
+
+<div data-test-selector="selected-date">{{this.selectedDateIso}}</div>
+<div data-test-selector="selected-time-zone">{{this.selectedDateTimezone}}</div>

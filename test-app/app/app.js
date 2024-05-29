@@ -4,6 +4,7 @@ import loadInitializers from 'ember-load-initializers';
 import config from 'test-app/config/environment';
 import { registerDateLibrary } from 'ember-power-calendar';
 import DateUtils from 'ember-power-calendar-luxon';
+import { Settings } from 'luxon';
 
 registerDateLibrary(DateUtils);
 
@@ -14,3 +15,5 @@ export default class App extends Application {
 }
 
 loadInitializers(App, config.modulePrefix);
+
+Settings.defaultZone = 'UTC';

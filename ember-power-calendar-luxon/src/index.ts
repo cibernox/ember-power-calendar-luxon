@@ -322,7 +322,8 @@ export function normalizeMultipleActionValue(val: {
 }
 
 export function normalizeCalendarDay(day: PowerCalendarDay): PowerCalendarDay {
-  day.datetime = DateTime.fromJSDate(day.date);
+  console.log('dz', Settings.defaultZone);
+  day.datetime = DateTime.fromJSDate(day.date, { zone: Settings.defaultZone });
   day.number = parseInt((day.datetime as DateTime).toFormat('d'), 10);
   return day;
 }
@@ -343,10 +344,13 @@ export function withLocale(locale: string, fn: () => unknown): unknown {
 export function normalizeCalendarValue(value: {
   date: Date;
 }): NormalizeCalendarValue {
+  console.log('dz', Settings.defaultZone);
   if (value) {
     return {
       date: value.date,
-      datetime: value.date ? DateTime.fromJSDate(value.date) : undefined,
+      datetime: value.date
+        ? DateTime.fromJSDate(value.date, { zone: Settings.defaultZone })
+        : undefined,
     };
   }
   return { date: undefined, datetime: undefined };
