@@ -5,15 +5,13 @@ import { Settings } from 'luxon';
 const defaultZone = Settings.defaultZone.name;
 
 module('Unit | Utility | normalize-calendar-day', function (hooks) {
-  hooks.beforeEach(function () {
-    Settings.defaultZone = 'Pacific/Niue';
-  });
-
   hooks.afterEach(function () {
     Settings.defaultZone = defaultZone;
   });
 
   test('normalizeCalendarDay', function (assert) {
+    Settings.defaultZone = 'Pacific/Niue';
+    
     let date = new Date('2020-01-02T00:00:00Z');
     
     const calendarDay = normalizeCalendarDay({
