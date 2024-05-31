@@ -4,7 +4,7 @@ import { Settings } from 'luxon';
 
 const defaultZone = Settings.defaultZone.name;
 
-module('Unit | Utility | date-utils', function (hooks) {
+module('Unit | Utility | normalize-calendar-day', function (hooks) {
   hooks.beforeEach(function () {
     Settings.defaultZone = 'Pacific/Niue';
   });
