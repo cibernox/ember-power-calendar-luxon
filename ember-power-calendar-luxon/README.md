@@ -14,7 +14,7 @@ luxon is your preferred date manipulation library.
 ## Compatibility
 
 * Ember.js v3.28 or above
-* Ember CLI v3.28 or above
+* Embroider or ember-auto-import 2.0
 
 
 ## Installation
