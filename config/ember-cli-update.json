@@ -11,9 +11,6 @@
           "isBaseBlueprint": true,
           "options": [
             "--pnpm",
-            "--addon-location=ember-power-calendar-luxon",
-            "--test-app-location=test-app",
-            "--release-it",
             "--typescript"
           ]
         }
