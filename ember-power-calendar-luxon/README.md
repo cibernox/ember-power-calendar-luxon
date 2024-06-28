@@ -41,6 +41,8 @@ This means that luxon settings which you are setting inside your app are not syn
 To fix this issue, you need to add this lines in embroider options. This force the import always to ESModule and so you have only one luxon instance inside your app.
 
 ```js
+const path = require('path');
+
 return require('@embroider/compat').compatBuild(app, Webpack, {
   packagerOptions: {
     webpackConfig: {
