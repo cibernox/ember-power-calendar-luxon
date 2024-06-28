@@ -1,10 +1,15 @@
 import {
-  DateTime,
-  Settings,
+  dependencySatisfies,
+  macroCondition,
+  importSync,
+} from '@embroider/macros';
+import type * as LuxonNs from 'luxon';
+import type {
   Duration,
-  type DateTimeFormatOptions,
-  type DateTimeUnit,
-  type DateObjectUnits,
+  DateTime,
+  DateTimeFormatOptions,
+  DateTimeUnit,
+  DateObjectUnits,
 } from 'luxon';
 import type {
   NormalizeCalendarValue,
@@ -12,6 +17,16 @@ import type {
   NormalizeRangeActionValue,
   PowerCalendarDay,
 } from 'ember-power-calendar/utils';
+
+const luxon: typeof LuxonNs = (() => {
+  if (macroCondition(dependencySatisfies('luxon', '*'))) {
+    return importSync('luxon') as typeof LuxonNs;
+  } else {
+    throw new Error(
+      `ember-power-calendar-luxon was unable to detect luxon. Please add the package to your app.`,
+    );
+  }
+})();
 
 /* Sadly the day in which weeks start is not part of the Intl API, so I need to harcode them */
 const WEEK_STARTS: {
@@ -144,12 +159,12 @@ const WEEK_STARTS: {
 
 function _getWeekdays(dayFormat: string) {
   const result: string[] = [];
-  const formatter = new Intl.DateTimeFormat(Settings.defaultLocale, {
+  const formatter = new Intl.DateTimeFormat(luxon.Settings.defaultLocale, {
     weekday: dayFormat as DateTimeFormatOptions['weekday'],
     timeZone: 'UTC',
   });
   for (let i = 4; i <= 10; i++) {
-    const dt = DateTime.utc(1970, 1, i).toJSDate();
+    const dt = luxon.DateTime.utc(1970, 1, i).toJSDate();
     result.push(formatter.format(dt));
   }
   return result;
@@ -184,7 +199,7 @@ export default {
 };
 
 export function add(date: Date, quantity: number, unit: string): Date {
-  return DateTime.fromJSDate(date)
+  return luxon.DateTime.fromJSDate(date)
     .plus({ [unit]: quantity })
     .toJSDate();
 }
@@ -194,7 +209,7 @@ export function formatDate(
   format: string,
   locale: string | null = null,
 ): string {
-  let datetime = DateTime.isDateTime(date) ? date : DateTime.fromJSDate(date);
+  let datetime = luxon.DateTime.isDateTime(date) ? date : luxon.DateTime.fromJSDate(date);
   if (locale) {
     datetime = datetime.setLocale(locale);
   }
@@ -206,7 +221,7 @@ export function formatDate(
 }
 
 export function startOf(date: Date, unit: string): Date {
-  let datetime = DateTime.fromJSDate(date);
+  let datetime = luxon.DateTime.fromJSDate(date);
   if (unit === 'week') {
     const normalizedLocale = datetime?.locale?.toLowerCase() ?? '';
     let weekday = WEEK_STARTS[normalizedLocale];
@@ -229,17 +244,17 @@ export function startOf(date: Date, unit: string): Date {
 }
 
 export function endOf(date: Date, unit: string): Date {
-  return DateTime.fromJSDate(date)
+  return luxon.DateTime.fromJSDate(date)
     .endOf(unit as DateTimeUnit)
     .toJSDate();
 }
 
 export function weekday(date: Date): number {
-  return DateTime.fromJSDate(date).weekday;
+  return luxon.DateTime.fromJSDate(date).weekday;
 }
 
 export function isoWeekday(date: Date): number {
-  const dayStr = DateTime.fromJSDate(date).toISOWeekDate()?.split('-')[2] ?? '';
+  const dayStr = luxon.DateTime.fromJSDate(date).toISOWeekDate()?.split('-')[2] ?? '';
   return parseInt(dayStr, 10);
 }
 
@@ -264,8 +279,8 @@ export function isBefore(date1: Date, date2: Date): boolean {
 }
 
 export function isSame(date1: Date, date2: Date, unit: string): boolean {
-  const dt1 = DateTime.fromJSDate(date1);
-  const dt2 = DateTime.fromJSDate(date2);
+  const dt1 = luxon.DateTime.fromJSDate(date1);
+  const dt2 = luxon.DateTime.fromJSDate(date2);
   return dt1.hasSame(dt2, unit as DateTimeUnit);
 }
 
@@ -282,15 +297,15 @@ export function isBetween(
 }
 
 export function diff(date1: Date, date2: Date): number {
-  return DateTime.fromJSDate(date1)
-    .diff(DateTime.fromJSDate(date2))
+  return luxon.DateTime.fromJSDate(date1)
+    .diff(luxon.DateTime.fromJSDate(date2))
     .as('milliseconds');
 }
 
 export function normalizeDate(dateOrDateTime?: unknown): Date | undefined {
   if (dateOrDateTime instanceof Date) {
     return dateOrDateTime;
-  } else if (DateTime.isDateTime(dateOrDateTime)) {
+  } else if (luxon.DateTime.isDateTime(dateOrDateTime)) {
     return (dateOrDateTime as DateTime).toJSDate();
   }
 }
@@ -305,9 +320,9 @@ export function normalizeRangeActionValue(val: {
     date: val.date,
     datetime: {
       start: val.date.start
-        ? DateTime.fromJSDate(val.date.start)
+        ? luxon.DateTime.fromJSDate(val.date.start)
         : val.date.start,
-      end: val.date.end ? DateTime.fromJSDate(val.date.end) : val.date.end,
+      end: val.date.end ? luxon.DateTime.fromJSDate(val.date.end) : val.date.end,
     },
   };
 }
@@ -317,12 +332,12 @@ export function normalizeMultipleActionValue(val: {
 }): NormalizeMultipleActionValue {
   return {
     date: val.date,
-    datetime: val.date ? val.date.map((e) => DateTime.fromJSDate(e)) : val.date,
+    datetime: val.date ? val.date.map((e) => luxon.DateTime.fromJSDate(e)) : val.date,
   };
 }
 
 export function normalizeCalendarDay(day: PowerCalendarDay): PowerCalendarDay {
-  day.datetime = DateTime.fromJSDate(day.date);
+  day.datetime = luxon.DateTime.fromJSDate(day.date);
   day.number = parseInt((day.datetime as DateTime).toFormat('d'), 10);
   return day;
 }
@@ -330,10 +345,10 @@ export function normalizeCalendarDay(day: PowerCalendarDay): PowerCalendarDay {
 export function withLocale(locale: string, fn: () => unknown): unknown {
   let returnValue;
   if (locale) {
-    const previousLocale = Settings.defaultLocale;
-    Settings.defaultLocale = locale;
+    const previousLocale = luxon.Settings.defaultLocale;
+    luxon.Settings.defaultLocale = locale;
     returnValue = fn();
-    Settings.defaultLocale = previousLocale;
+    luxon.Settings.defaultLocale = previousLocale;
   } else {
     returnValue = fn();
   }
@@ -346,7 +361,7 @@ export function normalizeCalendarValue(value: {
   if (value) {
     return {
       date: value.date,
-      datetime: value.date ? DateTime.fromJSDate(value.date) : undefined,
+      datetime: value.date ? luxon.DateTime.fromJSDate(value.date) : undefined,
     };
   }
   return { date: undefined, datetime: undefined };
@@ -368,7 +383,7 @@ export function normalizeDuration(value: unknown): number | null | undefined {
   if (value === null) {
     return null;
   }
-  if (value instanceof Duration) {
+  if (value instanceof luxon.Duration) {
     return (value as Duration).valueOf();
   }
   if (typeof value === 'number') {
@@ -379,14 +394,14 @@ export function normalizeDuration(value: unknown): number | null | undefined {
     const quantity = matches[1] ?? '';
     let units = matches[2]?.trim() || 'days';
     units = DURATION_UNITS[units] || units;
-    const duration = Duration.fromObject({ [units]: parseInt(quantity, 10) });
+    const duration = luxon.Duration.fromObject({ [units]: parseInt(quantity, 10) });
     return duration.valueOf();
   }
 }
 
 export function getDefaultLocale(): string {
   return (
-    Settings.defaultLocale || DateTime.local().resolvedLocaleOptions().locale
+    luxon.Settings.defaultLocale || luxon.DateTime.local().resolvedLocaleOptions().locale
   );
 }
 

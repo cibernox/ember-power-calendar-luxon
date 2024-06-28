@@ -15,7 +15,6 @@ luxon is your preferred date manipulation library.
 
 * Ember.js v3.28 or above
 * Ember CLI v3.28 or above
-* Node.js v18 or above
 
 
 ## Installation
@@ -30,6 +29,31 @@ import { registerDateLibrary } from 'ember-power-calendar';
 import DateUtils from 'ember-power-calendar-luxon';
 
 registerDateLibrary(DateUtils);
+```
+
+
+## Setup for Embroider
+
+The luxon package has conditional exports, which will not correctly handled in app.
+Cause of this issue, there are two different instance of luxon inside the app. The app imports CommonJs package but embroider force the import of ESModule.
+This means that luxon settings which you are setting inside your app are not synced with addon.
+
+To fix this issue, you need to add this lines in embroider options. This force the import always to ESModule and so you have only one luxon instance inside your app.
+
+```js
+const path = require('path');
+
+return require('@embroider/compat').compatBuild(app, Webpack, {
+  packagerOptions: {
+    webpackConfig: {
+      resolve: {
+        alias: {
+          luxon: path.resolve(__dirname, 'node_modules/luxon/build/node/luxon.js'),
+        },
+      },
+    },
+  },
+});
 ```
 
 ## Usage
