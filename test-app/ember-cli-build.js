@@ -16,7 +16,10 @@ module.exports = function (defaults) {
       webpackConfig: {
         resolve: {
           alias: {
-            luxon: path.resolve(__dirname, 'node_modules/luxon/build/node/luxon.js'),
+            luxon: path.resolve(
+              __dirname,
+              'node_modules/luxon/build/node/luxon.js',
+            ),
           },
         },
       },

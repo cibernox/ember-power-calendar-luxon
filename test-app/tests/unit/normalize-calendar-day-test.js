@@ -24,6 +24,9 @@ module('Unit | Utility | normalize-calendar-day', function (hooks) {
     });
 
     assert.strictEqual(calendarDay.datetime.zoneName, 'Pacific/Niue');
-    assert.strictEqual(calendarDay.datetime.toISO(), '2020-01-01T13:00:00.000-11:00');
+    assert.strictEqual(
+      calendarDay.datetime.toISO(),
+      '2020-01-01T13:00:00.000-11:00',
+    );
   });
 });
