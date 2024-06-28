@@ -52,5 +52,6 @@
       "tokenRef": "GITHUB_AUTH"
     },
     "npm": false
-  }
+  },
+  "packageManager": "pnpm@9.4.0"
 }
