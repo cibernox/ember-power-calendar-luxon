@@ -29,6 +29,9 @@ importers:
       release-it:
         specifier: ^17.3.0
         version: 17.4.0(typescript@5.5.2)
+      typescript:
+        specifier: ^5.5.2
+        version: 5.5.2
 
   ember-power-calendar-luxon:
     dependencies:
