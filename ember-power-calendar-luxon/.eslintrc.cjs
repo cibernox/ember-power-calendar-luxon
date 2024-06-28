@@ -10,7 +10,7 @@ module.exports = {
       root: __dirname,
     },
   },
-  plugins: ['ember'],
+  plugins: ['ember', 'import'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
@@ -21,6 +21,24 @@ module.exports = {
   },
   rules: {},
   overrides: [
+    // ts files
+    {
+      files: ['**/*.ts', '**/*.gts'],
+      extends: [
+        'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended',
+      ],
+      rules: {
+        // Add any custom rules here
+      },
+    },
+    // require relative imports use full extensions
+    {
+      files: ['src/**/*.{js,ts,gjs,gts}'],
+      rules: {
+        'import/extensions': ['error', 'always', { ignorePackages: true }],
+      },
+    },
     // node files
     {
       files: [
