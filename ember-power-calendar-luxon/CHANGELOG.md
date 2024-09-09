@@ -4,6 +4,22 @@
 
 
 
+
+## v2.0.0 (2024-09-09)
+
+#### :boom: Breaking Change
+* [#42](https://github.com/cibernox/ember-power-calendar-luxon/pull/42) Fix global timezone set ([@mkszepp](https://github.com/mkszepp))
+
+#### :bug: Bug Fix
+* [#42](https://github.com/cibernox/ember-power-calendar-luxon/pull/42) Fix global timezone set ([@mkszepp](https://github.com/mkszepp))
+
+#### :house: Internal
+* [#45](https://github.com/cibernox/ember-power-calendar-luxon/pull/45) Docs: Fix compatibility ([@mkszepp](https://github.com/mkszepp))
+* [#43](https://github.com/cibernox/ember-power-calendar-luxon/pull/43) Add missing cli config & update dependencies ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## v1.0.0 (2024-03-12)
 
 ## v0.8.1 (2024-02-13)
